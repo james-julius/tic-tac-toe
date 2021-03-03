@@ -1,49 +1,53 @@
 
 import './App.scss';
 import { useState } from 'react'
-import { Box, Text } from '@chakra-ui/react'
+import { Box, Button, Heading, Text } from '@chakra-ui/react'
+
+const initialGameSquares = [
+  {
+    isChecked: false,
+    byPlayer: null,
+  },
+  {
+    isChecked: false,
+    byPlayer: null,
+  },
+  {
+    isChecked: false,
+    byPlayer: null,
+  },
+  {
+    isChecked: false,
+    byPlayer: null,
+  },
+  {
+    isChecked: false,
+    byPlayer: null,
+  },
+  {
+    isChecked: false,
+    byPlayer: null,
+  },
+  {
+    isChecked: false,
+    byPlayer: null,
+  },
+  {
+    isChecked: false,
+    byPlayer: null,
+  },
+  {
+    isChecked: false,
+    byPlayer: null,
+  },
+];
 
 function App() {
   const [currentPlayer, setCurrentPlayer] = useState(1);
-  const [gameSquares, setGameSquares] = useState([
-    {
-      isChecked: false,
-      byPlayer: null
-    },
-    {
-      isChecked: false,
-      byPlayer: null
-    },
-    {
-      isChecked: false,
-      byPlayer: null
-    },
-    {
-      isChecked: false,
-      byPlayer: null
-    },
-    {
-      isChecked: false,
-      byPlayer: null
-    },
-    {
-      isChecked: false,
-      byPlayer: null
-    },
-    {
-      isChecked: false,
-      byPlayer: null
-    },
-    {
-      isChecked: false,
-      byPlayer: null
-    },
-    {
-      isChecked: false,
-      byPlayer: null
-    }
-  ]);
+  const [gameSquares, setGameSquares] = useState([...initialGameSquares]);
 
+  const [showGameStatus, setShowGameStatus] = useState(false);
+  const [gameStatus, setGameStatus] = useState('')
   const winningConditions = [
     [1, 2, 3],
     [4, 5, 6],
@@ -109,12 +113,30 @@ function App() {
     }
   }
 
+  function handleReset() {
+    // Reset the game
+    setGameSquares([...initialGameSquares]);
+    setShowGameStatus(false);
+    setGameStatus('');
+  }
+
   return (
     <Box className="game-page">
+      <Box className="game-headings">
+        <Heading>Player {currentPlayer}'s turn</Heading>
+
+        {showGameStatus && (
+          <>
+            <Heading>{gameStatus}</Heading>
+            <Button onClick={handleReset}>Play Again</Button>
+          </>
+        )}
+      </Box>
+
       <Box className="game-container">
         {gameSquares.map((square, squareId) => {
           console.log(square);
-          console.log(square.byPlayer === 1)
+          console.log(square.byPlayer === 1);
           return (
             <Box
               className="game-square"

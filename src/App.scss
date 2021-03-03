@@ -1,8 +1,15 @@
 .game-page {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding-top: 8vh;
+  .game-headings {
+    height: 15vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   .game-container {
     width: 50vw;
     min-width: 400px;
