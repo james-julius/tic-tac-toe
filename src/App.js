@@ -1,10 +1,10 @@
 
 import './App.scss';
-import Nought from './assets/nought.svg';
-import Cross from './assets/cross.svg';
 import { useState } from 'react'
-import { Box, Image, Button } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import GameHeadings from './components/GameHeadings';
+import TicTacToe from './components/TicTacToe';
+import GameButtons from './components/GameButtons';
 
 const initialGameSquares = [
   {
@@ -45,14 +45,7 @@ const initialGameSquares = [
   },
 ];
 
-function App() {
-  const [currentPlayer, setCurrentPlayer] = useState(1);
-  const [gameSquares, setGameSquares] = useState(initialGameSquares);
-
-  const [gameComplete, setGameComplete] = useState(false);
-  const [gameStatus, setGameStatus] = useState('');
-  const [moveHistory, setMoveHistory] = useState([]);
-  const winningConditions = [
+const winningConditions = [
     // Horizontals
     [0, 1, 2],
     [3, 4, 5],
@@ -66,17 +59,20 @@ function App() {
     [0, 4, 8]
   ];
 
+function App() {
+  const [currentPlayer, setCurrentPlayer] = useState(1);
+  const [gameSquares, setGameSquares] = useState(initialGameSquares);
+  const [gameComplete, setGameComplete] = useState(false);
+  const [gameStatus, setGameStatus] = useState('');
+  const [moveHistory, setMoveHistory] = useState([]);
+
   function checkIfDraw() {
     // If all squares have been played
     const playedSquares = gameSquares.filter(square => square.isChecked);
-    console.log('Played squares length');
-    console.log(playedSquares.length);
     if (playedSquares.length === 9) {
-      console.log('squares is NINE');
       // and no player has won
       if (!gameComplete) {
         // It is a draw
-        console.log("It's a draw!")
         setGameComplete(true);
         setGameStatus("It's a draw!");
       }
@@ -104,9 +100,8 @@ function App() {
       // The player won
       if (hasWon) {
         setGameComplete(true)
-        // const playerAsIcon = (currentPlayer === 1) ? <Image class="heading-icon" src={Cross}/> : <Image class="heading-icon" src={Nought}/>;
-        setGameStatus('Player ' + currentPlayer +  'wins!');
-        return;
+        setGameStatus('wins!');
+        return true;
       }
     }
     // The player has not won
@@ -130,6 +125,12 @@ function App() {
         let newGameSquares = [...gameSquares];
         let squareToCheck = newGameSquares[squareId];
         squareToCheck.isChecked = true;
+
+        // Update the move history so we can undo
+        let newMoveHistory = [...moveHistory];
+        newMoveHistory.push(squareId);
+        setMoveHistory(newMoveHistory);
+
         if (currentPlayer === 1) {
           // Update the square with the player number
           squareToCheck.byPlayer = 1;
@@ -144,10 +145,6 @@ function App() {
         checkIfDraw();
         // Persist in setState
         setGameSquares(newGameSquares);
-        // Update the move history so we can undoo
-        let newMoveHistory = [...moveHistory];
-        newMoveHistory.push(squareId);
-        setMoveHistory(newMoveHistory);
         // Switch player for next time
         switchPlayer();
       }
@@ -194,7 +191,6 @@ function App() {
         byPlayer: null,
       },
     ]);
-    console.log(gameSquares);
     setGameComplete(false);
     setGameStatus('');
     setMoveHistory([]);
@@ -226,41 +222,21 @@ function App() {
 
   return (
     <Box className="game-page">
-      <GameHeadings gameStatus={gameStatus} gameComplete={gameComplete} currentPlayer={currentPlayer}/>
-      <Box className="game-container">
-        {gameSquares.map((square, squareId) => {
-          return (
-            <Box
-              className="game-square"
-              key={squareId}
-              onClick={() => handleClick(squareId)}
-            >
-              {square.isChecked && (
-                <>
-                  {square.byPlayer === 1 ? (
-                    <Image className="nought-or-cross" src={Cross} />
-                  ) : null}
-                  {square.byPlayer === 2 ? (
-                    <Image className="nought-or-cross" src={Nought} />
-                  ) : null}
-                </>
-              )}
-            </Box>
-          );
-        })}
-      </Box>
-      <Box className="game-buttons">
-        {gameComplete && (
-          <Button className="game-button" onClick={handleReset}>
-            Play Again
-          </Button>
-        )}
-        {moveHistory.length !== 0 && (
-          <Button className="game-button" onClick={handleUndoTurn}>
-            Undo last turn?
-          </Button>
-        )}
-      </Box>
+      <GameHeadings 
+        gameStatus={gameStatus} 
+        gameComplete={gameComplete} 
+        currentPlayer={currentPlayer}
+      />
+      <TicTacToe 
+        handleClick={handleClick} 
+        gameSquares={gameSquares}
+      />
+      <GameButtons 
+        handleUndoTurn={handleUndoTurn}
+        handleReset={handleReset}
+        gameComplete={gameComplete}
+        moveHistory={moveHistory}
+      />
     </Box>
   );
 }
