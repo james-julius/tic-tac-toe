@@ -1,7 +1,10 @@
 
 import './App.scss';
+import Nought from './assets/nought.svg';
+import Cross from './assets/cross.svg';
 import { useState } from 'react'
-import { Box, Button, Heading, Text } from '@chakra-ui/react'
+import { Box, Image, Button } from '@chakra-ui/react'
+import GameHeadings from './components/GameHeadings';
 
 const initialGameSquares = [
   {
@@ -100,14 +103,13 @@ function App() {
       }
       // The player won
       if (hasWon) {
-        console.log('player: ' + currentPlayer + ' wins!');
         setGameComplete(true)
+        // const playerAsIcon = (currentPlayer === 1) ? <Image class="heading-icon" src={Cross}/> : <Image class="heading-icon" src={Nought}/>;
         setGameStatus('Player ' + currentPlayer +  'wins!');
         return;
       }
     }
     // The player has not won
-    console.log('Player' + currentPlayer + 'has not won')
     return false;
   }
 
@@ -224,21 +226,7 @@ function App() {
 
   return (
     <Box className="game-page">
-      <Box className="game-headings">
-        {gameComplete && (
-          <>
-            <Heading as="h3">{gameStatus}</Heading>
-            <Button onClick={handleReset}>Play Again</Button>
-          </>
-        )}
-        {!gameComplete && (
-          <>
-            <Heading as="h2">Player {currentPlayer}'s turn</Heading>
-            {moveHistory.length !== 0 && <Button onClick={handleUndoTurn}>Undo last turn?</Button>}
-          </>
-        )}
-      </Box>
-
+      <GameHeadings gameStatus={gameStatus} gameComplete={gameComplete} currentPlayer={currentPlayer}/>
       <Box className="game-container">
         {gameSquares.map((square, squareId) => {
           return (
@@ -248,16 +236,30 @@ function App() {
               onClick={() => handleClick(squareId)}
             >
               {square.isChecked && (
-                <Box className="check">
-                  <Text>
-                    {square.byPlayer === 1 ? "X" : null}
-                    {square.byPlayer === 2 ? "O" : null}
-                  </Text>
-                </Box>
+                <>
+                  {square.byPlayer === 1 ? (
+                    <Image className="nought-or-cross" src={Cross} />
+                  ) : null}
+                  {square.byPlayer === 2 ? (
+                    <Image className="nought-or-cross" src={Nought} />
+                  ) : null}
+                </>
               )}
             </Box>
           );
         })}
+      </Box>
+      <Box className="game-buttons">
+        {gameComplete && (
+          <Button className="game-button" onClick={handleReset}>
+            Play Again
+          </Button>
+        )}
+        {moveHistory.length !== 0 && (
+          <Button className="game-button" onClick={handleUndoTurn}>
+            Undo last turn?
+          </Button>
+        )}
       </Box>
     </Box>
   );
