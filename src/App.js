@@ -47,7 +47,8 @@ function App() {
   const [gameSquares, setGameSquares] = useState(initialGameSquares);
 
   const [gameComplete, setGameComplete] = useState(false);
-  const [gameStatus, setGameStatus] = useState('')
+  const [gameStatus, setGameStatus] = useState('');
+  const [moveHistory, setMoveHistory] = useState([]);
   const winningConditions = [
     // Horizontals
     [0, 1, 2],
@@ -141,6 +142,11 @@ function App() {
         checkIfDraw();
         // Persist in setState
         setGameSquares(newGameSquares);
+        // Update the move history so we can undoo
+        let newMoveHistory = [...moveHistory];
+        newMoveHistory.push(squareId);
+        setMoveHistory(newMoveHistory);
+        // Switch player for next time
         switchPlayer();
       }
     }
@@ -189,18 +195,47 @@ function App() {
     console.log(gameSquares);
     setGameComplete(false);
     setGameStatus('');
+    setMoveHistory([]);
+  }
+
+  function handleUndoTurn() {
+    // If the game just begun
+    if (moveHistory.length === 0) return;
+    // Create shallow state copies so as not to edit the state reference
+    const newGameSquares = [...gameSquares];
+    const newMoveHistory = [...moveHistory];
+
+    // Was the game just won? If so, reset the gameComplete status
+    if (gameComplete) {
+      setGameComplete(false);
+      setGameStatus("");
+    }
+    // Pop the last move off the history stack
+    let lastSquare = newMoveHistory.pop();
+    // Reset the square
+    newGameSquares[lastSquare].isChecked = false;
+    newGameSquares[lastSquare].byPlayer = null;
+    // Pass back into state
+    setGameSquares(newGameSquares);
+    setMoveHistory(newMoveHistory);
+    // Switch back player
+    switchPlayer();
   }
 
   return (
     <Box className="game-page">
       <Box className="game-headings">
-        {gameComplete ? (
+        {gameComplete && (
           <>
             <Heading as="h3">{gameStatus}</Heading>
             <Button onClick={handleReset}>Play Again</Button>
           </>
-        ) : (
-          <Heading as="h2">Player {currentPlayer}'s turn</Heading>
+        )}
+        {!gameComplete && (
+          <>
+            <Heading as="h2">Player {currentPlayer}'s turn</Heading>
+            {moveHistory.length !== 0 && <Button onClick={handleUndoTurn}>Undo last turn?</Button>}
+          </>
         )}
       </Box>
 
