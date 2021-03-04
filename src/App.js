@@ -85,7 +85,6 @@ function App() {
       // True until proven false
       let hasWon = true;
       for (let winningSquare of winningArr) {
-        // console.log("now checking winningArr: " + winningArr.toString());
         // For each set, check if the player has it
         let gameSquare = gameSquares[winningSquare];
         let playerHasSquare = gameSquare.isChecked && gameSquare.byPlayer === currentPlayer;
@@ -99,6 +98,7 @@ function App() {
       }
       // The player won
       if (hasWon) {
+        debugger;
         setGameComplete(true)
         setGameStatus('wins!');
         return true;

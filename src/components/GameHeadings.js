@@ -11,7 +11,8 @@ export default function GameHeadings({ gameComplete, gameStatus, currentPlayer})
           Tic Tac Toe
         </Heading>
         {gameComplete ? (
-          <Heading 
+          <>
+          {(gameStatus === 'wins!') && <Heading 
             as="h2" 
             className="icon-header" 
             d="inline-flex"
@@ -22,11 +23,19 @@ export default function GameHeadings({ gameComplete, gameStatus, currentPlayer})
               <Image className="heading-icon" src={Nought} />
             )}{" "}
             wins!
-          </Heading>
+          </Heading>}
+          {(gameStatus === `It's a draw!`) && <Heading 
+            as="h2" 
+            className="icon-header" 
+            d="inline-flex"
+          >
+            {gameStatus}
+          </Heading>}
+          </>
         ) : (
           <Heading
             as="h2"
-            class="icon-header"
+            className="icon-header"
             d="inline-flex"
             alignItems="center"
           >
