@@ -98,7 +98,6 @@ function App() {
       }
       // The player won
       if (hasWon) {
-        debugger;
         setGameComplete(true)
         setGameStatus('wins!');
         return true;
@@ -236,6 +235,7 @@ function App() {
         handleReset={handleReset}
         gameComplete={gameComplete}
         moveHistory={moveHistory}
+        currentPlayer={currentPlayer}
       />
     </Box>
   );

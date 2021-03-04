@@ -1,11 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Mali&display=swap');
+
 h1 {
   font-size: 3rem;
 }
-
 h2 {
-  font-size: 1.5em;
-  color: grey;
-  font-weight: bold;
+  font-size: 2rem;
+}
+
+@media (max-width: 400px) {
+  h1 {
+    font-size: 3rem;
+  }
+  h2 {
+    font-size: 1.4rem;
+    margin: 5px auto;
+  }
 }
 
 .game-page {
@@ -13,7 +22,7 @@ h2 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 8vh;
+  padding-top: 4vh;
   .game-headings {
     height: 15vh;
     display: flex;
@@ -25,29 +34,42 @@ h2 {
       align-items: center;
       justify-content: center;
       .heading-icon {
-        max-height: 20px;
+        max-height: 32px;
         width: auto;
-        margin-right: 5px;
+        margin-right: 8px;
+        position: relative;
+        top: 3px;
+        @media (max-width: 400px) {
+          max-height: 24px;
+        }
       }
     }
   }
   .game-container {
     width: 40vw;
-    min-width: 300px;
+    min-width: 200px;
     height: 40vw;
-    min-height: 300px;
-    max-width: 600px;
-    max-height: 600px;
+    min-height: 200px;
+    max-width: 400px;
+    max-height: 400px;
     display: grid;
     grid-template: repeat(3, 1fr) / repeat(3, 1fr);
     grid-gap: 10px;
-    margin-top: 3vh;
+    margin-top: 5vh;
+    @media (max-width: 400px) {
+      margin-top: 6vh;
+    }
     .game-square {
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 3px solid lightgrey;
+      border:solid 3px #41403E;
+      border-style: outset;
       box-shadow: 3px 3px 3px lightgrey;
+      border-top-left-radius: 255px 15px;
+      border-top-right-radius: 15px 225px;
+      border-bottom-right-radius: 225px 15px;
+      border-bottom-left-radius:15px 255px;
       cursor: pointer;
       .check {
         height: 100%;
@@ -66,11 +88,22 @@ h2 {
     align-items: center;
     flex-wrap: wrap;
     justify-content: center;
+    max-width: 600px;
 
     .game-button {
       min-width: 200px;
       margin: 10px;
       box-shadow: 3px 3px lightgrey;
+      border: solid 3px #41403E;
+      border-top-left-radius: 255px 15px;
+      border-top-right-radius: 15px 225px;
+      border-bottom-right-radius: 225px 15px;
+      border-bottom-left-radius:15px 255px;
+      .button-icon {
+        max-height: 60%;
+        width: auto;
+        margin-left: 10px;
+      }
     }
   }
 }

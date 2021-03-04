@@ -15,10 +15,10 @@ export default function TicTacToe({ handleClick, gameSquares}) {
               {square.isChecked && (
                 <>
                   {square.byPlayer === 1 ? (
-                    <Image className="nought-or-cross" src={Cross} />
+                    <Image className="nought-or-cross" src={Cross} alt="Cross" />
                   ) : null}
                   {square.byPlayer === 2 ? (
-                    <Image className="nought-or-cross" src={Nought} />
+                    <Image className="nought-or-cross" src={Nought} alt="Nought" />
                   ) : null}
                 </>
               )}
