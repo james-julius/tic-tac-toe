@@ -12,13 +12,13 @@ export default function GameButtons ({ handleReset, handleUndoTurn, gameComplete
                 <Image 
                     className="button-icon"
                     src={Cross} 
-                    alt="Cross"
+                    alt="X"
                 />
              ) : (
                 <Image 
                     className="button-icon"
                     src={Nought}
-                    alt="Nought"
+                    alt="O"
                 />
              )}
           </Button>
